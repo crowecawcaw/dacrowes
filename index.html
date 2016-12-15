@@ -1,0 +1,178 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Stephen + Erika - April 10</title>
+    <link href='https://fonts.googleapis.com/css?family=Pinyon+Script' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet' type='text/css'>
+    <link href="simplegrid.css" rel="stylesheet" type="text/css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .cover {
+            background: url(header.jpg) no-repeat center center;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            min-height: 100%;
+            width: 100%;
+            position: relative;
+        }
+        
+        .pictureFrame {
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            border: 11px solid #fff;
+        }
+        
+        .title {
+            font-family: 'Pinyon Script', cursive;
+            color: white;
+            font-size: 10vw;
+            padding-left: 50px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .info {
+            font-family: 'Merriweather', serif;
+            font-size: 16pt;
+            padding: 50px 50px;
+        }
+        
+        @media handheld, only screen and (max-width: 767px) {
+            .info{
+                font-size: 14pt;
+                padding: 25px 25px;
+            }
+        }
+        
+        h1 {
+            font-family: 'Merriweather', serif;
+            font-size: 22pt;
+            font-weight: 400;
+            text-transform: uppercase;
+        }
+        
+        
+        input[type="text"], input[type="number"] {
+            margin: 0;
+            font-family: 'Merriweather', serif;
+            font-size: 20px;
+            font-weight: 400;
+            appearance: none;
+            box-shadow: none;
+            border-radius: none;
+            border: none;
+            border-bottom: 2px solid black;
+            text-transform: uppercase;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+        }
+        
+        input[type="radio"] {
+            display: none;
+        }
+        
+
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script>
+        var isAttending=false;
+        function attendingSelect(yesno){
+            if(yesno){
+                $('#attending').html('X');
+                $('#notAttending').html('&nbsp;');
+                isAttending="yes";
+            } else {
+                $('#attending').html('&nbsp;');
+                $('#notAttending').html('X');
+                isAttending="no";
+            }
+        }
+        function postRSVP() {
+            console.log(isAttending);
+            var name = $('#name').val();
+            var number = $('#number').val();
+            if ((name !== "") && (isAttending !== false) && (number !== "")) {
+                $.ajax({
+                    url: "https://docs.google.com/forms/d/1bYVeNSB1tBfNk4HyvGuIt14KNtzPUUSOW80WFtOXc58/formResponse",
+                    data: {"entry.115991344" : name, "entry.2032341307" : isAttending, "entry.1025921816": number},
+                    type: "POST",
+                    dataType: "xml",
+                    statusCode: {
+                        0: function (){
+                            thankYou();
+                        },
+                        200: function (){
+                            thankYou();
+                        }
+                    }
+                });
+            }
+            else {
+                alert('error');
+            }
+            return;
+        }
+        function thankYou(){
+            if(isAttending=="yes")
+                $('#rsvp').html("<h1>Thank you</h1><p>We look forward to seeing you!");
+            else
+                $('#rsvp').html("<h1>Thank you</h1><p> We're sorry you can't make it.");
+        }
+    </script>
+</head>
+
+<body>
+    <div class="cover pictureFrame">
+        <div class="title">Stephen
+            <br>+
+            <br>Erika</div>
+    </div>
+    <div class="grid info">
+        <div class="col-1-2">
+            <h1>April 10, 2016</h1>
+            <p>Ashton Gardens - West Houston
+                <br> 18002 Clay Road
+                <br> Houston, TX 77084
+            <p> The ceremony begins at 12pm followed by lunch and a reception.</p>
+        </div>
+        <div id="rsvp" class="col-1-2">
+            <h1>RSVP</h1>
+            <form>
+                <p>Name:
+                    <input type="text" name="name" id="name" size="20">
+                    <p>
+                        <span style="display: inline-block; padding-right: 30px; cursor:pointer;" onclick="attendingSelect(true)">
+                            <span id="attending" style="display: inline-block; width: 30px; text-align:center;border-bottom: solid 2px black;">&nbsp;</span>
+                            Attending
+                        </span>
+                        <span style="display: inline-block; padding-right: 30px; cursor:pointer;" onClick="attendingSelect(false)">
+                            <span id="notAttending" style="display: inline-block; width: 30px; text-align:center;border-bottom: solid 2px black;">&nbsp;</span>
+                            Not Attending
+                        </span>
+                    <p>
+                        <span style="display: inline-block; padding-right: 50px;">
+                            Number attending:
+                            <input style="text-align: center" type="number" name="number" id="number" min="0" max="9"> 
+                        </span>
+                        <span style="display: inline-block; float: right; cursor: pointer; border: solid 2px black; border-radius: 3px; padding: 7px;" onclick="postRSVP()" >
+                            Submit
+                        </span>
+            </form>
+        </div>
+        <div class="col-1-1" style="margin-top: 100px;">
+            <p style="text-align: center">We are registered online <a href="https://www.myregistry.com/wedding-registry/Stephen-Crowe-Erika-Sanchez-Friendswood-TX/1059330" target="_blank">here</a>.</p>
+        </div>
+</body>
+
+</html>
